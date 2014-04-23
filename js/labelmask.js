@@ -1,7 +1,7 @@
 /*! Labelmask - v0.1.0 - 2014-04-23
  * Inserts input-masking-style functionality into labels without disrupting the input itself.
  * Based on Politespace by Filament Group https://github.com/filamentgroup/politespace
- * Hacked apart by Brad Frost
+ * Hacked apart by Brad Frost. Propert development welcome
  * MIT License */
 
 (function( w ){
