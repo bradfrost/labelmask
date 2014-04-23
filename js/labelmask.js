@@ -7,9 +7,9 @@
 (function( w ){
 	"use strict";
 
-	var Politespace = function( element ) {
+	var Labelmask = function( element ) {
 		if( !element ) {
-			throw new Error( "Politespace requires an element argument." );
+			throw new Error( "Labelmask requires an element argument." );
 		}
 
 		if( !element.getAttribute ) {
@@ -36,7 +36,7 @@
 		this.groupReg = new RegExp( groupRegMatch.join( '' ), !this.groupRegNonUniform ? 'g' : '' );
 	};
 
-	Politespace.prototype._buildRegexArr = function( groupLengths ) {
+	Labelmask.prototype._buildRegexArr = function( groupLengths ) {
 		var split = ( '' + groupLengths ).split( ',' ),
 			str = [];
 
@@ -47,7 +47,7 @@
 		return str;
 	};
 
-	Politespace.prototype.format = function( value ) {
+	Labelmask.prototype.format = function( value ) {
 		var val = value,
 			match;
 
@@ -76,7 +76,7 @@
 		return val;
 	};
 
-	Politespace.prototype.update = function() {
+	Labelmask.prototype.update = function() {
 		var maxlength = this.element.getAttribute( "maxlength" ),
 			val = this.format( this.element.value );
 
@@ -87,31 +87,31 @@
 		this.element.value = val;
 	};
 
-	Politespace.prototype.unformat = function( value ) {
+	Labelmask.prototype.unformat = function( value ) {
 		return value.replace( /\s/g, '' );
 	};
 
-	Politespace.prototype.reset = function() {
+	Labelmask.prototype.reset = function() {
 		this.element.value = this.unformat( this.element.value );
 	};
 
-	Politespace.prototype.addLabelMask = function() {
+	Labelmask.prototype.addLabelMask = function() {
 		if(this.elLabel.find('.labelmask').length === 0) {
 			this.elLabel.append('<span class="labelmask"></span>');
 		}
 	};
 
-	Politespace.prototype.updateLabelMask = function( val ) {
+	Labelmask.prototype.updateLabelMask = function( val ) {
 		var maskedText = this.mask(),
 			formattedText = this.format(maskedText);
 		this.elLabel.find('.labelmask').html(" " + formattedText);
 	};
 
-	Politespace.prototype.removeLabelMask = function( ) {
+	Labelmask.prototype.removeLabelMask = function( ) {
 		this.elLabel.find('.labelmask').remove();
 	};
 
-	Politespace.prototype.mask = function() {
+	Labelmask.prototype.mask = function() {
 		var charCount = this.element.value.length,
 			placeholderSub = this.placeholder.replace(/ /g,'').replace(/-/g,'').substr( charCount ),
 			val = this.element.value + placeholderSub;
@@ -119,7 +119,7 @@
 		return val;
 	};
 
-	w.Politespace = Politespace;
+	w.Labelmask = Labelmask;
 
 }( this ));
 
@@ -128,13 +128,13 @@
 
 	// jQuery Plugin
 
-	var componentName = "politespace",
+	var componentName = "labelmask",
 		enhancedAttr = "data-enhanced",
 		initSelector = "[data-" + componentName + "]:not([" + enhancedAttr + "])";
 
 	$.fn[ componentName ] = function(){
 		return this.each( function(){
-			var polite = new Politespace( this );
+			var polite = new Labelmask( this );
 
 			$( this ).bind( "blur", function() {
 					polite.update();

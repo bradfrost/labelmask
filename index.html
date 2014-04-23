@@ -47,7 +47,7 @@
 
 	</style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-	<script src="js/politespace.js"></script>
+	<script src="js/labelmask.js"></script>
 	<script>
 		jQuery( function(){
 			jQuery( document ).trigger( "enhance" );
@@ -62,12 +62,12 @@
 		<p>Labelmask is a way to create accessible input hinting without using input masks.</a></p>
 		<div class="field">
 			<label for="input-cc">Credit Card</label>
-			<input type="text" pattern="[0-9]*" id="input-cc" data-politespace data-grouplength="4" placeholder="xxxx xxxx xxxx xxxx" />
+			<input type="text" pattern="[0-9]*" id="input-cc" data-labelmask data-grouplength="4" placeholder="xxxx xxxx xxxx xxxx" />
 			<code>input[type=text]</code> (Credit Card) with <code>data-grouplength="4"</code> and <code>pattern="[0-9]*"</code>
 		</div>
 
 		<label for="input-tel">Phone</label>
-			<input type="tel" id="input-tel" data-politespace data-grouplength="3,3," data-spacer="-" placeholder="___-___-____" />
+			<input type="tel" id="input-tel" data-labelmask data-grouplength="3,3," data-spacer="-" placeholder="___-___-____" />
 			<code>input[type=tel]</code> (US Phone Number) with <code>data-grouplength="3,3,"</code>
 		</label>
 		
