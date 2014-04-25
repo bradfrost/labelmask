@@ -134,7 +134,11 @@
 	};
 
 	Labelmask.addInputType = function(name, attrs) {
-		name && attrs.spacer && attrs.format && (Labelmask.Types[name] = attrs);
+		name &&
+		attrs.spacer &&
+		attrs.format &&
+		attrs.groupLength &&
+		(Labelmask.Types[name] = attrs);
 	};
 
 	w.Labelmask = Labelmask;
@@ -162,8 +166,10 @@
 				.bind( "focus", function() {
 					polite.reset();
 					polite.addLabelMask();
+					polite.updateLabelMask($(this).val());
 				})
 				.bind( "keyup", function() {
+					polite.reset();
 					polite.updateLabelMask($(this).val());
 
 				})
