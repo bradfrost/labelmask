@@ -8,27 +8,24 @@
 	"use strict";
 
 	var Labelmask = function( element ) {
-		if( !element ) {
-			throw new Error( "Labelmask requires an element argument." );
-		}
 
-		if( !element.getAttribute ) {
-			// Cut the mustard
-			return;
-		}
+		var type, groupRegMatch;
 
-		var groupRegMatch;
+		if ( !element ) throw new Error( "Labelmask requires an element argument." );
+		if ( !element.getAttribute ) return;
+
+		type = element.getAttribute("data-format").replace(/-/g, '_').toUpperCase();
+
+		if ( !( type in Labelmask.Types ) ) return;
 
 		this.element = element;
-
 		this.elID = this.element.id;
 
-		this.groupLength = this.element.getAttribute( "data-grouplength" ) || 3;
-		groupRegMatch = this._buildRegexArr( this.groupLength );
+		this.inputSpacer = Labelmask.Types[ type ].spacer;
+		this.inputFormat = Labelmask.Types[ type ].format;
 
-		this.spacer = this.element.getAttribute( "data-spacer" ) || ' ';
-
-		this.placeholder = this.element.placeholder;
+		this.inputGroupLength = Labelmask.Types[ type ].groupLength;
+		groupRegMatch = this._buildRegexArr( this.inputGroupLength );
 
 		this.elLabel = $("[for="+this.elID+"]");
 
@@ -37,10 +34,11 @@
 	};
 
 	Labelmask.prototype._buildRegexArr = function( groupLengths ) {
-		var split = ( '' + groupLengths ).split( ',' ),
-			str = [];
+		var split, str, j, k;
+		split = ( '' + groupLengths ).split( ',' );
+		str = [];
 
-		for( var j = 0, k = split.length; j<k; j++ ) {
+		for( j = 0, k = split.length; j<k; j++ ) {
 			str.push( '([\\S]{' + ( split[ j ] === '' ? '1,' : split[j] ) + '})' + ( j > 0 ? "?" : "" ) );
 		}
 
@@ -64,7 +62,7 @@
 				}
 			}
 
-			val = ( match || [ val ] ).join( this.spacer );
+			val = ( match || [ val ] ).join( this.inputSpacer );
 		} else {
 			val = val.replace( this.groupReg, "$1 " );
 
@@ -88,7 +86,7 @@
 	};
 
 	Labelmask.prototype.unformat = function( value ) {
-		return value.replace( /\s/g, '' );
+		return value.replace( RegExp(this.inputSpacer, 'g'), '' );
 	};
 
 	Labelmask.prototype.reset = function() {
@@ -113,10 +111,32 @@
 
 	Labelmask.prototype.mask = function() {
 		var charCount = this.element.value.length,
-			placeholderSub = this.placeholder.replace(/ /g,'').replace(/-/g,'').substr( charCount ),
-			val = this.element.value + placeholderSub;
+			remainingFormat = this.inputFormat.substr( charCount ),
+			val = this.element.value + remainingFormat;
 		console.log(val);
 		return val;
+	};
+
+	Labelmask.Types = {
+		CREDIT_CARD_NUMBER: {
+			spacer: ' ',
+			format: 'xxxxxxxxxxxxxxxx',
+			groupLength: '4'
+		},
+
+		US_TELEPHONE_NUMBER: {
+			spacer: '-',
+			format: '__________',
+			groupLength: '3,3,'
+		}
+	};
+
+	Labelmask.addInputType = function(name, attrs) {
+		name &&
+		attrs.spacer &&
+		attrs.format &&
+		attrs.groupLength &&
+		(Labelmask.Types[name] = attrs);
 	};
 
 	w.Labelmask = Labelmask;
@@ -134,6 +154,7 @@
 
 	$.fn[ componentName ] = function(){
 		return this.each( function(){
+
 			var polite = new Labelmask( this );
 
 			$( this ).bind( "blur", function() {
@@ -143,8 +164,10 @@
 				.bind( "focus", function() {
 					polite.reset();
 					polite.addLabelMask();
+					polite.updateLabelMask($(this).val());
 				})
 				.bind( "keyup", function() {
+					polite.reset();
 					polite.updateLabelMask($(this).val());
 
 				})
