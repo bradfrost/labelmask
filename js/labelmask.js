@@ -113,10 +113,28 @@
 
 	Labelmask.prototype.mask = function() {
 		var charCount = this.element.value.length,
-			placeholderSub = this.placeholder.replace(/ /g,'').replace(/-/g,'').substr( charCount ),
-			val = this.element.value + placeholderSub;
+			remainingFormat = this.inputFormat.substr( charCount ),
+			val = this.element.value + remainingFormat;
 		console.log(val);
 		return val;
+	};
+
+	Labelmask.Types = {
+		CREDIT_CARD_NUMBER: {
+			spacer: ' ',
+			format: 'xxxxxxxxxxxxxxxx',
+			groupLength: '4'
+		},
+
+		US_TELEPHONE_NUMBER: {
+			spacer: '-',
+			format: '__________',
+			groupLength: '3,3,'
+		}
+	};
+
+	Labelmask.addInputType = function(name, attrs) {
+		name && attrs.spacer && attrs.format && (Labelmask.Types[name] = attrs);
 	};
 
 	w.Labelmask = Labelmask;
@@ -134,6 +152,7 @@
 
 	$.fn[ componentName ] = function(){
 		return this.each( function(){
+
 			var polite = new Labelmask( this );
 
 			$( this ).bind( "blur", function() {
