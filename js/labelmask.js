@@ -28,9 +28,13 @@
 
 		this.spacer = this.element.getAttribute( "data-spacer" ) || ' ';
 
-		this.placeholder = this.element.placeholder;
+		//this.placeholder = this.element.placeholder;
+
+		this.placeholder = this.element.getAttribute( "placeholder" );
+		//console.log(this.placeholder);
 
 		this.elLabel = $("[for="+this.elID+"]");
+
 
 		this.groupRegNonUniform = groupRegMatch.length > 1;
 		this.groupReg = new RegExp( groupRegMatch.join( '' ), !this.groupRegNonUniform ? 'g' : '' );
@@ -115,7 +119,6 @@
 		var charCount = this.element.value.length,
 			placeholderSub = this.placeholder.replace(/ /g,'').replace(/-/g,'').substr( charCount ),
 			val = this.element.value + placeholderSub;
-		console.log(val);
 		return val;
 	};
 
