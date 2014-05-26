@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Labelmask demo</title>
 	<style>
@@ -46,8 +47,10 @@
 	}
 
 	</style>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="js/labelmask.js"></script>
+	<script src="js/parsley.min.js"></script>
 	<script>
 		jQuery( function(){
 			jQuery( document ).trigger( "enhance" );
@@ -58,19 +61,22 @@
 	<header role="banner" class="header">
 		<h1>Labelmask</h1>
 	</header>
-	<form>
+	<form id="myForm">
 		<p>Labelmask is a way to create accessible input hinting without using input masks.</a></p>
 		<div class="field">
 			<label for="input-cc">Credit Card</label>
-			<input type="text" pattern="[0-9]*" id="input-cc" data-labelmask data-grouplength="4" placeholder="xxxx xxxx xxxx xxxx" />
+			<input type="text" pattern="[0-9]*" id="input-cc" data-labelmask data-grouplength="4" placeholder="xxxx xxxx xxxx xxxx" data-parsley-required data-parsley-trigger="blur" />
 			<code>input[type=text]</code> (Credit Card) with <code>data-grouplength="4"</code> and <code>pattern="[0-9]*"</code>
 		</div>
 
 		<label for="input-tel">Phone</label>
-			<input type="tel" id="input-tel" data-labelmask data-grouplength="3,3," data-spacer="-" placeholder="___-___-____" />
+			<input type="tel" id="input-tel" data-labelmask data-grouplength="3,3," data-spacer="-" placeholder="___-___-____" data-parsley-required data-parsley-trigger="blur" />
 			<code>input[type=tel]</code> (US Phone Number) with <code>data-grouplength="3,3,"</code>
 		</label>
 		
 	</form>
+	<script>
+	$('#myForm').parsley();
+	</script>
 </body>
 </html>
