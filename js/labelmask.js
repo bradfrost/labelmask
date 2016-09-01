@@ -88,7 +88,7 @@
 	};
 
 	Labelmask.prototype.unformat = function( value ) {
-		return value.replace( /\s|-/g, '' );
+		return value.replace( /\s|-|\//g, '' );
 	};
 
 	Labelmask.prototype.reset = function() {
