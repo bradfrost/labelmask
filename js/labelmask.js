@@ -48,7 +48,7 @@
 	};
 
 	Labelmask.prototype.format = function( value ) {
-		var val = value,
+		var val = value.replace(/ /g, '').replace(/-/g,''),
 			match;
 
 		if( this.groupRegNonUniform ) {
